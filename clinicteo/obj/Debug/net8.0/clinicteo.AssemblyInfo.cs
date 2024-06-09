@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("clinicteo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b88f6899cfdedaeb75ab1f94937839ae4c9cefa3")]
 [assembly: System.Reflection.AssemblyProductAttribute("clinicteo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("clinicteo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

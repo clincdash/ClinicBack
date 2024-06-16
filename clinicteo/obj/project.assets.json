@@ -31,6 +31,19 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "Evolve/3.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Evolve.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Evolve.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication/2.1.1": {
         "type": "package",
         "dependencies": {
@@ -1184,6 +1197,20 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "Evolve/3.2.0": {
+      "sha512": "MSkI0OHrwqKYwykHdp0GIiLgaBEVl1mMJjO5R5sebj2X0kPOfWTNs47SuNc5Yka8OruvIOlHre0eZRm5BBtnGg==",
+      "type": "package",
+      "path": "evolve/3.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "evolve.3.2.0.nupkg.sha512",
+        "evolve.nuspec",
+        "lib/netstandard2.0/Evolve.dll",
+        "lib/netstandard2.0/Evolve.pdb",
+        "lib/netstandard2.0/Evolve.xml"
       ]
     },
     "Microsoft.AspNetCore.Authentication/2.1.1": {
@@ -2992,6 +3019,7 @@
     "net8.0": [
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.0",
+      "Evolve >= 3.2.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.6",
       "Microsoft.AspNetCore.Http.Extensions >= 2.1.21",
       "Microsoft.AspNetCore.Identity >= 2.1.39",
@@ -3061,6 +3089,10 @@
             "target": "Package",
             "version": "[12.0.0, )"
           },
+          "Evolve": {
+            "target": "Package",
+            "version": "[3.2.0, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.6, )"
@@ -3117,7 +3149,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
+          "Evolve": "3.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.6",
           "Microsoft.AspNetCore.Http.Extensions": "2.1.21",
           "Microsoft.AspNetCore.Identity": "2.1.39",
@@ -44,6 +45,14 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {
             "assemblyVersion": "12.0.0.0",
             "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "Evolve/3.2.0": {
+        "runtime": {
+          "lib/netstandard2.0/Evolve.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
           }
         }
       },
@@ -536,6 +545,13 @@
       "sha512": "sha512-XCJ4E3oKrbRl1qY9Mr+7uyC0xZj1+bqQjmQRWTiTKiVuuXTny+7YFWHi20tPjwkMukLbicN6yGlDy5PZ4wyi1w==",
       "path": "automapper.extensions.microsoft.dependencyinjection/12.0.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512"
+    },
+    "Evolve/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MSkI0OHrwqKYwykHdp0GIiLgaBEVl1mMJjO5R5sebj2X0kPOfWTNs47SuNc5Yka8OruvIOlHre0eZRm5BBtnGg==",
+      "path": "evolve/3.2.0",
+      "hashPath": "evolve.3.2.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication/2.1.1": {
       "type": "package",

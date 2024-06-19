@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using clinicteo.Models.User.dto;
+using clinicteo.Models.User.Dto;
 
-namespace clinicteo.Models.User.mapper;
+namespace clinicteo.Models.User.Mapper;
 
 public class UserMapperProfile : Profile
 {

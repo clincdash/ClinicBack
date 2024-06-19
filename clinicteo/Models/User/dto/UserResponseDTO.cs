@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace clinicteo.Models.User.dto;
+﻿namespace clinicteo.Models.User.Dto;
 
 public class UserResponseDTO
 {

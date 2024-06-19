@@ -1,8 +1,9 @@
 using clinicteo.Context;
-using clinicteo.Models.User.mapper;
-using clinicteo.Repositories;
-using clinicteo.Repositories.impl;
+using clinicteo.Models.User.Mapper;
 using clinicteo.Services;
+using clinicteo.UnitOfWork;
+using clinicteo.UnitOfWork.Repositories;
+using clinicteo.UnitOfWork.Repositories.impl;
 using EvolveDb;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +16,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ClinicService>();
-builder.Services.AddScoped<ClinicTeoContext>();
-builder.Services.AddScoped( typeof( IRepository<> ), typeof( GenericRepository<> ));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped< ClinicService >();
+builder.Services.AddScoped< ClinicTeoContext >();
+builder.Services.AddScoped( typeof( IRepositoryGeneric<> ), typeof( GenericRepository<> ));
+builder.Services.AddScoped< RepositoryUoW >();
 builder.Services.AddAutoMapper( typeof( UserMapperProfile ) );
 
 var postgreURL = "TeoIrado";

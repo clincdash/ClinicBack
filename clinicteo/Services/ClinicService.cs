@@ -1,34 +1,33 @@
-﻿
-
-using AutoMapper;
+﻿using AutoMapper;
 using clinicteo.Models.User;
-using clinicteo.Models.User.dto;
-using clinicteo.Repositories;
+using clinicteo.Models.User.Dto;
+using clinicteo.UnitOfWork;
+using clinicteo.UnitOfWork.Repositories.impl;
 
 namespace clinicteo.Services;
 
 public class ClinicService
 {
-    private readonly IUserRepository userRepository;
+    private readonly RepositoryUoW repositoryUoW;
     private readonly IMapper mapper;
     private readonly DateOnly dateNow;
 
-    public ClinicService( IUserRepository userRepository, IMapper mapper)
+    public ClinicService( RepositoryUoW repositoryUoW, IMapper mapper)
     {
-        this.userRepository = userRepository ?? throw new ArgumentNullException( nameof( userRepository ) );
+        this.repositoryUoW = repositoryUoW ?? throw new ArgumentNullException( nameof( repositoryUoW ) );
         this.mapper = mapper ?? throw new ArgumentNullException( nameof( mapper ) );
         dateNow = DateOnly.FromDateTime(DateTime.Now);
 
     }
 
-    public UserResponseDTO Save( UserRequestDTO user )
+    public UserResponseDTO SaveUser( UserRequestDTO user )
     {
-        var userFound = userRepository.GetUserByCRM(user.CRM);
-        if (userFound == null)
+        var userExist = repositoryUoW.UserRepository.GetUserByCRM(user.CRM);
+        if (userExist == null)
         {
             var userModel = mapper.Map<User>( user );
             userModel.CreateAt =  dateNow;
-            userRepository.CreateUser( userModel );
+            repositoryUoW.UserRepository.Save( userModel );
             
             return mapper.Map<UserResponseDTO>(userModel);
         }
@@ -38,47 +37,34 @@ public class ClinicService
         }
     }
 
-    public List<UserResponseDTO> GetAll()
+    public List<UserResponseDTO> GetAllUsers()
     {
-        var users = userRepository.GetAllUsers();
+        var users = repositoryUoW.UserRepository.GetAll();
         var userDtos = mapper.Map<List<UserResponseDTO>>( users );
 
         return userDtos;
     }
 
-    public void Delete( int id )
+    public void DeleteUser( int id )
     {
-        userRepository.DeleteUser( id );
+        repositoryUoW.UserRepository.Delete( id );
     }
 
-    public UserResponseDTO Put(int id, UserRequestUpdateDTO userDTO)
+    public UserResponseDTO PutUser(int id, UserRequestUpdateDTO userDTO)
     {
-        var user = userRepository.GetById(id);
+        var user = repositoryUoW.UserRepository.FindById( id);
         user.UpdateAt = dateNow;
         mapper.Map( userDTO, user );
-        var userDto = userRepository.UpdateUser( user );
+        var userDto = repositoryUoW.UserRepository.Update( user );
         return mapper.Map<UserResponseDTO>( userDto );
     }
 
     public void PutPassword(int id, UserRequestUpdatePasswordDTO newPassword )
     {
-        var user = userRepository.GetById(id);
+        var user = repositoryUoW.UserRepository.FindById( id);
+        user.UpdateAt = dateNow;
         mapper.Map( newPassword, user);
 
-        userRepository.UpdateUser( user );
+        repositoryUoW.UserRepository.Update( user );
     }
-    private DateTime GarantirUtc( DateTime dateTime )
-    {
-        if (dateTime.Equals(null))
-        {
-            dateTime = DateTime.Now;
-        }
-        if (dateTime.Kind == DateTimeKind.Utc)
-        {
-            return dateTime;
-        }
-
-        return dateTime.ToUniversalTime();
-    }
-
 }

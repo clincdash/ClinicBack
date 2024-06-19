@@ -1,4 +1,4 @@
-﻿using clinicteo.Models.User.dto;
+﻿using clinicteo.Models.User.Dto;
 using clinicteo.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,25 +18,27 @@ public class ClinicTeoController : ControllerBase
     [HttpPost]
     public ActionResult PostUser( UserRequestDTO user )
     {
-        return Ok( clinicService.Save( user ) );
+        return Ok( clinicService.SaveUser( user ) );
     }
+
     [HttpGet]
     [Route("/all")]
     public ActionResult GetAllUser()
     {
-        return Ok( clinicService.GetAll() );
+        return Ok( clinicService.GetAllUsers() );
     }
+
     [HttpDelete]
     public ActionResult DeleteUser( int id )
     {
-        clinicService.Delete( id );
+        clinicService.DeleteUser( id );
         return NoContent();
     }
 
     [HttpPut( "{id}" )]
     public ActionResult PutUser(int id, UserRequestUpdateDTO user )
     {
-        return Ok( clinicService.Put(id , user) );
+        return Ok( clinicService.PutUser(id , user) );
     }
 
     [HttpPut( "reset-password/{id}" )]

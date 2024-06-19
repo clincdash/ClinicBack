@@ -1,6 +1,5 @@
 ﻿
 using clinicteo.Models.Base;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace clinicteo.Models.User;

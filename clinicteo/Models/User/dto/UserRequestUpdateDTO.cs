@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace clinicteo.Models.User.dto;
+namespace clinicteo.Models.User.Dto;
 
 public class UserRequestUpdateDTO
 {
@@ -11,3 +11,4 @@ public class UserRequestUpdateDTO
     [NotNull]
     public string Email { get; set; }
 }
+

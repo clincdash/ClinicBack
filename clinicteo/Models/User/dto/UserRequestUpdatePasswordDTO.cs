@@ -1,4 +1,4 @@
-﻿namespace clinicteo.Models.User.dto;
+﻿namespace clinicteo.Models.User.Dto;
 
 public class UserRequestUpdatePasswordDTO
 {

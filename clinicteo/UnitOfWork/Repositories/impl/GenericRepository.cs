@@ -25,7 +25,6 @@ namespace clinicteo.UnitOfWork.Repositories.impl
                 try
                 {
                     dataset.Remove(entity);
-                    context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -38,9 +37,9 @@ namespace clinicteo.UnitOfWork.Repositories.impl
             }
         }
 
-        public T FindById(int id)
+        public async Task<T> FindByIdAsync(int id)
         {
-            var entity = dataset.FirstOrDefault(e => e.Id.Equals(id));
+            var entity = await dataset.FirstOrDefaultAsync(e => e.Id.Equals(id));
             if (entity == null)
             {
                 throw new InvalidOperationException("Entity not found!");
@@ -53,7 +52,6 @@ namespace clinicteo.UnitOfWork.Repositories.impl
             try
             {
                 dataset.Add(entity);
-                context.SaveChanges();
                 return entity;
             }
             catch (Exception ex)
@@ -62,12 +60,24 @@ namespace clinicteo.UnitOfWork.Repositories.impl
             }
         }
 
+        public async Task<T> SaveAsync( T entity )
+        {
+            try
+            {
+                await dataset.AddAsync( entity );
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception( "Unable to save entity!", ex );
+            }
+        }
+
         public T Update(T entity)
         {
             try
             {
                 dataset.Update(entity);
-                context.SaveChanges();
                 return entity;
             }
             catch (Exception ex)
@@ -79,6 +89,21 @@ namespace clinicteo.UnitOfWork.Repositories.impl
         public List<T> GetAll()
         {
             return dataset.ToList();
+        }
+
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await dataset.ToListAsync();
+        }
+
+        public T FindById( int id )
+        {
+            var entity =  dataset.FirstOrDefault( e => e.Id.Equals( id ) );
+            if (entity == null)
+            {
+                throw new InvalidOperationException( "Entity not found!" );
+            }
+            return entity;
         }
     }
 }

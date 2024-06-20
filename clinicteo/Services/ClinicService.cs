@@ -2,7 +2,6 @@
 using clinicteo.Models.User;
 using clinicteo.Models.User.Dto;
 using clinicteo.UnitOfWork;
-using clinicteo.UnitOfWork.Repositories.impl;
 
 namespace clinicteo.Services;
 
@@ -20,51 +19,118 @@ public class ClinicService
 
     }
 
-    public UserResponseDTO SaveUser( UserRequestDTO user )
+    public async Task<UserResponseDTO> SaveUser( UserRequestDTO user )
     {
-        var userExist = repositoryUoW.UserRepository.GetUserByCRM(user.CRM);
-        if (userExist == null)
+        try
         {
-            var userModel = mapper.Map<User>( user );
-            userModel.CreateAt =  dateNow;
-            repositoryUoW.UserRepository.Save( userModel );
-            
-            return mapper.Map<UserResponseDTO>(userModel);
+            var userExist = await repositoryUoW.UserRepository.GetUserByCRMAsync( user.CRM );
+            if (userExist == null)
+            {
+                var userModel = mapper.Map<User>( user );
+                userModel.CreateAt = dateNow;
+                await repositoryUoW.UserRepository.SaveAsync( userModel );
+                await repositoryUoW.CommitAssync();
+                return mapper.Map<UserResponseDTO>( userModel );
+            }
+            else
+            {
+                throw new InvalidOperationException( "Entity exist!" );
+            }
         }
-        else
+        catch
         {
-            throw new Exception("Entity exist!");
+            repositoryUoW.Rollback();
+            throw;
+        }
+        finally
+        {
+            repositoryUoW.Dispose();
         }
     }
 
-    public List<UserResponseDTO> GetAllUsers()
+    public async Task<List<UserResponseDTO>> GetAllUsers()
     {
-        var users = repositoryUoW.UserRepository.GetAll();
-        var userDtos = mapper.Map<List<UserResponseDTO>>( users );
-
-        return userDtos;
+        try
+        {
+            var users = await repositoryUoW.UserRepository.GetAllAsync();
+            var userDtos = mapper.Map<List<UserResponseDTO>>( users );
+            return userDtos;
+        }
+        catch
+        {
+            repositoryUoW.Rollback();
+            throw;
+        }
+        finally 
+        {
+            repositoryUoW.Dispose();
+        }
     }
 
-    public void DeleteUser( int id )
+    public async Task DeleteUser( int id )
     {
-        repositoryUoW.UserRepository.Delete( id );
+        try
+        {
+            repositoryUoW.UserRepository.Delete( id );
+            await repositoryUoW.CommitAssync();
+        }
+        catch
+        {
+            repositoryUoW.Rollback();
+            throw;
+        }
+        finally
+        {
+            repositoryUoW.Dispose();
+        }
     }
 
-    public UserResponseDTO PutUser(int id, UserRequestUpdateDTO userDTO)
+    public async Task<UserResponseDTO> PutUser(int id, UserRequestUpdateDTO userDTO)
     {
-        var user = repositoryUoW.UserRepository.FindById( id);
-        user.UpdateAt = dateNow;
-        mapper.Map( userDTO, user );
-        var userDto = repositoryUoW.UserRepository.Update( user );
-        return mapper.Map<UserResponseDTO>( userDto );
+        try
+        {
+            var user = await repositoryUoW.UserRepository.FindByIdAsync( id );
+            user.CreateAt = dateNow;
+            mapper.Map( userDTO, user );
+            var userDto = repositoryUoW.UserRepository.Update( user );
+            await repositoryUoW.CommitAssync();
+            return mapper.Map<UserResponseDTO>( userDto );
+        }
+        catch
+        { 
+            repositoryUoW.Rollback( );
+            throw;
+        }
+        finally { 
+            repositoryUoW.Dispose(); 
+        }
     }
 
-    public void PutPassword(int id, UserRequestUpdatePasswordDTO newPassword )
+    public async Task PutPassword(int id, UserRequestUpdatePasswordDTO newPassword )
     {
-        var user = repositoryUoW.UserRepository.FindById( id);
-        user.UpdateAt = dateNow;
-        mapper.Map( newPassword, user);
+        try
+        {
+            var user = await repositoryUoW.UserRepository.FindByIdAsync( id );
+            if ( user != null )
+            {
+                user.UpdateAt = dateNow;
+                mapper.Map( newPassword, user );
 
-        repositoryUoW.UserRepository.Update( user );
+                repositoryUoW.UserRepository.Update( user );
+                await repositoryUoW.CommitAssync();
+            }
+            else
+            {
+                throw new InvalidOperationException( "Unable to update password" );
+            }
+        }
+        catch 
+        { 
+            repositoryUoW.Rollback( ); 
+            throw;
+        }
+        finally { 
+            repositoryUoW.Dispose(); 
+        }
     }
 }

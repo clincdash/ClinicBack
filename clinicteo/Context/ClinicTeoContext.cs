@@ -1,8 +1,5 @@
-﻿
-using clinicteo.Models.Base;
-using clinicteo.Models.User;
+﻿using clinicteo.Models.User;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace clinicteo.Context;
 

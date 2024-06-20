@@ -10,41 +10,40 @@ public class ClinicTeoController : ControllerBase
 {
     private readonly ClinicService clinicService;
 
-    public ClinicTeoController(ClinicService clinicService)
+    public ClinicTeoController( ClinicService clinicService )
     {
         this.clinicService = clinicService ?? throw new ArgumentNullException( nameof( clinicService ) );
     }
 
     [HttpPost]
-    public ActionResult PostUser( UserRequestDTO user )
+    public async Task<ActionResult> PostUser( UserRequestDTO user )
     {
-        return Ok( clinicService.SaveUser( user ) );
+        return  Ok( await clinicService.SaveUser( user ) );
     }
 
-    [HttpGet]
-    [Route("/all")]
-    public ActionResult GetAllUser()
+    [HttpGet("/all")]
+    public async Task<ActionResult> GetAllUser()
     {
-        return Ok( clinicService.GetAllUsers() );
+        return Ok( await clinicService.GetAllUsers() );
     }
 
     [HttpDelete]
-    public ActionResult DeleteUser( int id )
+    public async Task<ActionResult> DeleteUser( int id )
     {
-        clinicService.DeleteUser( id );
+        await clinicService.DeleteUser( id );
         return NoContent();
     }
 
     [HttpPut( "{id}" )]
-    public ActionResult PutUser(int id, UserRequestUpdateDTO user )
+    public async Task<ActionResult> PutUser( int id, UserRequestUpdateDTO user )
     {
-        return Ok( clinicService.PutUser(id , user) );
+        return Ok( await clinicService.PutUser( id, user ) );
     }
 
     [HttpPut( "reset-password/{id}" )]
-    public ActionResult PutUserPassword( int id, UserRequestUpdatePasswordDTO passwordDTO )
+    public async Task<ActionResult> PutUserPassword( int id, UserRequestUpdatePasswordDTO passwordDTO )
     {
-        clinicService.PutPassword( id, passwordDTO );
+        await clinicService.PutPassword( id, passwordDTO );
         return NoContent();
     }
 }

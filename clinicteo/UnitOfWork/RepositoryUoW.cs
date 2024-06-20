@@ -4,7 +4,7 @@ using clinicteo.UnitOfWork.Repositories.impl;
 
 namespace clinicteo.UnitOfWork;
 
-public class RepositoryUoW: IDisposable
+public class RepositoryUoW: IDisposable, IRepositoryUoW
 {
     private ClinicTeoContext clinicTeoContext { get; set; }
  
@@ -26,5 +26,18 @@ public class RepositoryUoW: IDisposable
     public void Dispose()
     {
         clinicTeoContext.Dispose();
+    }
+
+    public int Commit()
+    {
+        return clinicTeoContext.SaveChanges();
+    }
+
+    public async Task<int> CommitAssync()
+    {
+        return await clinicTeoContext.SaveChangesAsync();
+    }
+    public void Rollback()
+    {
     }
 }

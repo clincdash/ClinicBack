@@ -4,9 +4,12 @@ namespace clinicteo.UnitOfWork.Repositories;
 
 public interface IRepositoryGeneric<T> where T : BaseEntity
 {
-    T FindById(int id);
+    T FindById( int id );
+    Task<T> FindByIdAsync( int id );
     void Delete(int id);
-    T Update(T entityUpdate);
-    T Save(T entity);
+    T Save( T entity );
+    Task<T> SaveAsync( T entity );
     List<T> GetAll();
+    Task<List<T>> GetAllAsync();
+    T Update( T entity );
 }

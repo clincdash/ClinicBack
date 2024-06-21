@@ -16,13 +16,13 @@ public class ClinicService
         this.repositoryUoW = repositoryUoW ?? throw new ArgumentNullException( nameof( repositoryUoW ) );
         this.mapper = mapper ?? throw new ArgumentNullException( nameof( mapper ) );
         dateNow = DateOnly.FromDateTime(DateTime.Now);
-
     }
 
     public async Task<UserResponseDTO> SaveUser( UserRequestDTO user )
     {
         try
         {
+            await repositoryUoW.BeginTransactionAsync();
             var userExist = await repositoryUoW.UserRepository.GetUserByCRMAsync( user.CRM );
             if (userExist == null)
             {
@@ -52,18 +52,19 @@ public class ClinicService
     {
         try
         {
+            await repositoryUoW.BeginTransactionAsync();
             var users = await repositoryUoW.UserRepository.GetAllAsync();
             var userDtos = mapper.Map<List<UserResponseDTO>>( users );
             return userDtos;
         }
         catch
         {
-            repositoryUoW.Rollback();
+            await repositoryUoW.RollbackAsync();
             throw;
         }
         finally 
         {
-            repositoryUoW.Dispose();
+            await repositoryUoW.DisposeAsync();
         }
     }
 
@@ -71,17 +72,18 @@ public class ClinicService
     {
         try
         {
+            await repositoryUoW.BeginTransactionAsync();
             repositoryUoW.UserRepository.Delete( id );
             await repositoryUoW.CommitAssync();
         }
         catch
         {
-            repositoryUoW.Rollback();
+            await repositoryUoW.RollbackAsync();
             throw;
         }
         finally
         {
-            repositoryUoW.Dispose();
+            await repositoryUoW.DisposeAsync();
         }
     }
 
@@ -89,6 +91,7 @@ public class ClinicService
     {
         try
         {
+            await repositoryUoW.BeginTransactionAsync();
             var user = await repositoryUoW.UserRepository.FindByIdAsync( id );
             user.CreateAt = dateNow;
             mapper.Map( userDTO, user );
@@ -98,11 +101,11 @@ public class ClinicService
         }
         catch
         { 
-            repositoryUoW.Rollback( );
+            await repositoryUoW.RollbackAsync();
             throw;
         }
         finally { 
-            repositoryUoW.Dispose(); 
+            await repositoryUoW.DisposeAsync(); 
         }
     }
 

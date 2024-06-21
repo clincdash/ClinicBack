@@ -1,43 +1,78 @@
 ﻿using clinicteo.Context;
 using clinicteo.UnitOfWork.Repositories;
 using clinicteo.UnitOfWork.Repositories.impl;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace clinicteo.UnitOfWork;
 
 public class RepositoryUoW: IDisposable, IRepositoryUoW
 {
-    private ClinicTeoContext clinicTeoContext { get; set; }
+    private ClinicTeoContext _clinicTeoContext { get; set; }
  
-    public RepositoryUoW( ClinicTeoContext clinicTeoContext )
+    public RepositoryUoW( ClinicTeoContext clinicTeoContext)
     {
-        this.clinicTeoContext = clinicTeoContext;
+        _clinicTeoContext = clinicTeoContext;
     }
 
+    private IDbContextTransaction? _transaction = null;
     private IUserRepository? _userRepository = null;
 
     public IUserRepository UserRepository {  
         get 
         {
-            _userRepository ??= new UserRepository(clinicTeoContext);
+            _userRepository ??= new UserRepository(_clinicTeoContext);
             return _userRepository; 
         } 
     }
 
     public void Dispose()
     {
-        clinicTeoContext.Dispose();
+        _transaction?.Dispose();
     }
 
-    public int Commit()
+    public async Task DisposeAsync()
     {
-        return clinicTeoContext.SaveChanges();
+        if (_transaction != null)
+        {
+            await _transaction.DisposeAsync();
+        }
     }
 
-    public async Task<int> CommitAssync()
+    public void Commit()
     {
-        return await clinicTeoContext.SaveChangesAsync();
+        _clinicTeoContext.SaveChanges();
+        _transaction?.Commit();
     }
+
+    public async Task CommitAssync()
+    {
+        await _clinicTeoContext.SaveChangesAsync();
+        if ( _transaction != null)
+        {
+            await _transaction.CommitAsync();
+        }
+    }
+
     public void Rollback()
     {
+        _transaction?.Rollback();
+    }
+
+    public async Task RollbackAsync()
+    {
+        if (_transaction != null)
+        {
+            await _transaction.RollbackAsync();
+        }
+    }
+
+    public void BeginTransaction()
+    {
+        _transaction = _clinicTeoContext.Database.BeginTransaction();
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        _transaction = await _clinicTeoContext.Database.BeginTransactionAsync();
     }
 }

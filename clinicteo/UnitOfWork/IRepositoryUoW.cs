@@ -2,7 +2,9 @@
 
 public interface IRepositoryUoW
 {
-    int Commit();
-    Task<int> CommitAssync();
+    void Commit();
+    Task CommitAssync();
     void Rollback();
+    void BeginTransaction();
+    Task RollbackAsync();
 }

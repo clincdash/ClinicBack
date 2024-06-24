@@ -50,3 +50,5 @@ C:\Users\guilh\source\repos\clinicteo\clinicteo\bin\Debug\net8.0\Microsoft.Ident
 C:\Users\guilh\source\repos\clinicteo\clinicteo\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\guilh\source\repos\clinicteo\clinicteo\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\Users\guilh\source\repos\clinicteo\clinicteo\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\guilh\source\repos\clinicteo\clinicteo\obj\Debug\net8.0\clinicteo.sourcelink.json
+C:\Users\guilh\source\repos\clinicteo\clinicteo\bin\Debug\net8.0\Evolve.dll
